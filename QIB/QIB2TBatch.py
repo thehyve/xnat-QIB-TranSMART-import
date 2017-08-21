@@ -13,6 +13,8 @@ xnatpy      Downloadable here: https://bitbucket.org/bigr_erasmusmc/xnatpy
 import os
 import sys
 import logging
+
+from datetime import datetime
 import xnat
 
 if sys.version_info.major == 3:
@@ -64,7 +66,15 @@ def create_dir(config):
     """
 
     path = config.base_path + config.study_id
-    if not os.path.exists(path):
+    if os.path.exists(path):
+        path_date = str(datetime.now().date())
+        path += path_date
+        try:
+            os.makedirs(path)
+        except:
+            logging.error("Directory already exists. Give a different study ID or rename the existing directory.")
+            sys.exit()
+    else:
         os.makedirs(path)
     if not os.path.exists(path + "/tags/"):
         os.makedirs(path + "/tags/")
@@ -85,9 +95,10 @@ def write_params(path, config):
     study_param_file = open(path + '/study.params', 'w')
     study_param_file.write("STUDY_ID=" + config.study_id +
                            "\nSECURITY_REQUIRED=" + config.security_req +
-                           "\nTOP_NODE=" + config.top_node)
+                           "\nTOP_NODE=" + config.top_node +
+                           "\nAPPEND_FACTS=" + config.append_facts)
     clinical_param_file = open(path + '/clinical/clinical.params', 'w')
-    clinical_param_file.write("COLUMN_MAP_FILE=" + str(config.study_id) + "_columns.txt")
+    clinical_param_file.write("COLUMN_MAP_FILE=" + str(config.study_id) + "_columns.txt\nTAGS_FILE=../tags/tags.txt")
     tag_param_file.close()
     study_param_file.close()
     clinical_param_file.close()
@@ -135,17 +146,23 @@ def obtain_data(project, tag_file, patient_map, config):
     data_header_list = []
     data_list = []
     tag_dict = {}
+    scanner_dict = {}
+    with open(config.scanner_dict_file) as f:
+        for line in f:
+            (key, val) = line.replace('\n','').split('\t')
+            scanner_dict[key] = val
     for subject in project.subjects.values():
         data_row_dict = {}
         subject_obj = project.subjects[subject.label]
         for experiment in subject_obj.experiments.values():
             if "qib" in experiment.label.lower() and experiment.project == config.project_name:
                 # TODO: Make number of returns and parameters less.
-                data_header_list, data_row_dict, concept_key_list, tag_dict = retrieve_QIB(subject_obj, experiment,
+                data_header_list, data_row_dict, concept_key_list, tag_dict, scanner_dict = retrieve_QIB(experiment,
                                                                                            tag_file, data_row_dict,
                                                                                            subject, data_header_list,
                                                                                            concept_key_list, tag_dict,
-                                                                                           patient_map, config, project)
+                                                                                           patient_map, config,
+                                                                                           scanner_dict, project)
         if len(data_row_dict) > 0:
             data_list.append(data_row_dict)
 
@@ -160,8 +177,8 @@ def obtain_data(project, tag_file, patient_map, config):
     return data_list, data_header_list
 
 
-def retrieve_QIB(subject_obj, experiment, tag_file, data_row_dict, subject, data_header_list, concept_key_list, tag_dict,
-                 patient_map, config, project):
+def retrieve_QIB(experiment, tag_file, data_row_dict, subject, data_header_list, concept_key_list, tag_dict,
+                 patient_map, config, scanner_dict ,project):
     """
     Function: Retrieve the biomarker information from the QIB datatype.
     
@@ -183,6 +200,7 @@ def retrieve_QIB(subject_obj, experiment, tag_file, data_row_dict, subject, data
         -concept_key_list    List            List containing all the concept keys so far.
         -tag_dict            Dictionary      Dictionary used to check if certain lines are already in the tagsfile.
     """
+    subject_obj = project.subjects[subject.label]
     session = subject_obj.experiments[experiment.label]
     begin_concept_key, tag_dict = write_project_metadata(session, tag_file, tag_dict, config)
 
@@ -194,28 +212,36 @@ def retrieve_QIB(subject_obj, experiment, tag_file, data_row_dict, subject, data
         data_header_list.append('subject')
 
     label_list = experiment.label.split('_')
-    metadata = get_session_data(subject_obj, label_list)
+    metadata, scanner_dict = get_session_data(label_list, project, session.base_sessions.values(), scanner_dict, config)
+    for x in metadata:
+        if "scanner " in x:
+            line = '\t'.join([begin_concept_key+'\\'+metadata["scanner"], x, str(metadata[x])]) + "\t" + str(1) + "\n"
+            if line not in tag_dict:
+                tag_file.write(line)
+                tag_dict[line] = True
 
     for biomarker_category in session.biomarker_categories:
         results = session.biomarker_categories[biomarker_category]
 
         for biomarker in results.biomarkers:
             concept_value = results.biomarkers[biomarker].value
-            concept_key = str(begin_concept_key) + '\\' + str(metadata["scanner"]) + '\\' + str(biomarker_category) + "\\" + metadata["laterality"] \
+            concept_key = str(begin_concept_key) + '\\' + str(metadata["scanner"]) + '\\' + str(
+                biomarker_category) + "\\" + metadata["laterality"] \
                           + "\\" + metadata["timepoint"] + "\\" + str(biomarker)
             data_row_dict[concept_key] = concept_value
 
-            if concept_key not in data_header_list:
+            if concept_key not in data_header_list and concept_key not in concept_key_list:
                 data_header_list.append(concept_key)
+                concept_key_list.append(concept_key)
 
                 if __name__ == "QIB2TBatch":
-                    concept_key_list, tag_dict = write_concept_tags(results, biomarker, concept_key, concept_key_list,
-                                                                    tag_file, tag_dict, session, metadata)
+                    tag_dict = write_concept_tags(results, biomarker, concept_key, tag_file, tag_dict, session,
+                                                  metadata)
 
-    return data_header_list, data_row_dict, concept_key_list, tag_dict
+    return data_header_list, data_row_dict, concept_key_list, tag_dict, scanner_dict
 
 
-def write_concept_tags(results, biomarker, concept_key, concept_key_list, tag_file, tag_dict, session, metadata):
+def write_concept_tags(results, biomarker, concept_key, tag_file, tag_dict, session, metadata):
     """
 
     Parameters:
@@ -235,25 +261,24 @@ def write_concept_tags(results, biomarker, concept_key, concept_key_list, tag_fi
     ontology_name = results.biomarkers[biomarker].ontology_name
     ontology_IRI = results.biomarkers[biomarker].ontology_iri
     lines = []
-    if concept_key not in concept_key_list:
-        weight = 1
-        lines.append('\t'.join([concept_key, "Ontology name", ontology_name]) + '\t' + str(weight) + '\n')
-        lines.append('\t'.join([concept_key, "Ontology IRI", ontology_IRI]) + '\t' + str(weight) + '\n')
-        weight = 2
+    weight = 1
+    lines.append('\t'.join([concept_key, "Ontology name", ontology_name]) + '\t' + str(weight) + '\n')
+    lines.append('\t'.join([concept_key, "Ontology IRI", ontology_IRI]) + '\t' + str(weight) + '\n')
+    weight = 2
 
-        for x in session.base_sessions.values():
-            lines.append('\t'.join([concept_key, "accession identifier", x.accession_identifier])+ "\t"+str(weight)+"\n")
+    for x in session.base_sessions.values():
+        lines.append(
+            '\t'.join([concept_key, "accession identifier", x.accession_identifier]) + "\t" + str(weight) + "\n")
 
-        for x in metadata:
-            lines.append('\t'.join([concept_key, x, metadata[x]])+ "\t"+str(weight)+"\n")
+    for x in metadata:
+        lines.append('\t'.join([concept_key, x, str(metadata[x])]) + "\t" + str(weight) + "\n")
 
-        for line in lines:
-            if line not in tag_dict.keys():
-                tag_dict[line] = True
-                tag_file.write(line)
-        concept_key_list.append(concept_key)
+    for line in lines:
+        if (concept_key+x) not in tag_dict.keys():
+            tag_dict[line] = True
+            tag_file.write(line)
 
-    return concept_key_list, tag_dict
+    return tag_dict
 
 
 def write_project_metadata(session, tag_file, tag_dict, config):
@@ -286,8 +311,8 @@ def write_project_metadata(session, tag_file, tag_dict, config):
             if info_tag:
                 line = concept_key + "\t" + tag.replace('_', ' ') + "\t" + str(info_tag) + "\t" + str(i) + "\n"
                 i -= 1
-                if line not in tag_dict.keys():
-                    tag_dict[line] = True
+                if (concept_key+tag) not in tag_dict.keys():
+                    tag_dict[concept_key+tag] = info_tag
                     tag_file.write(line)
         except AttributeError:
             logging.info(tag + " not found for " + str(concept_key))
@@ -305,7 +330,6 @@ def write_data(data_file, concept_file, data_list, data_header_list):
     """
     data_file.write("\t".join(data_header_list) + '\n')
     column_list = []
-    rows = []
     subject_written = False
     for line in data_list:
         row = []
@@ -331,13 +355,13 @@ def write_data(data_file, concept_file, data_list, data_header_list):
                     concept_file.write(str(os.path.basename(data_file.name)) + '\t' + str(
                         "\\".join(header.split("\\")[:-1])) + '\t' + str(index + 1) + '\t' + str(data_label) + '\n')
         row[-1] = row[-1].replace('\t', '\n')
-        data_file.write(''.join(row))
-        rows.append(row)
-    check_subject(rows)
+        found_info, found_subject = check_subject(row)
+        if not found_info:
+            data_file.write(''.join(row))
     data_file.close()
 
 
-def check_subject(rows):
+def check_subject(row):
     """
     Function: Checks in a log file if the subject is new or if there is information added or removed.
 
@@ -345,33 +369,28 @@ def check_subject(rows):
         - rows   List    List containing lists with the retrieved QIB information of a subject.
     """
 
-    #TODO Needs a way to read the header for each datapiece.
+    # TODO Needs a way to read the header for each datapiece.
 
-    if __name__ != "__main__":
-        set_subject_logger(True)
-        subject_logger = logging.getLogger("QIBSubjects")
-    else:
-        subject_logger = logging.getLogger("QIBSubjects")
-
+    subject_logger = logging.getLogger("QIBSubjects")
     with open(subject_logger.handlers[0].baseFilename, "r") as log_file:
         log_data = log_file.read()
 
     written_to_file = []
 
-    for row in rows:
-        found_info = False
-        found_subject = False
-        if row[0] in log_data:
-            found_subject = True
-            if ''.join(row) in log_data:
-                found_info = True
+    found_info = False
+    found_subject = False
+    if row[0] in log_data:
+        found_subject = True
+        if ''.join(row) in log_data:
+            found_info = True
 
-        if not found_subject and row not in written_to_file:
-            subject_logger.info("New subject: " + ''.join(row))
-            written_to_file.append(row)
-        elif not found_info and row not in written_to_file:
-            subject_logger.info("New info for Subject: " + ''.join(row))
-            written_to_file.append(row)
+    if not found_subject and row not in written_to_file:
+        subject_logger.info("New subject: " + ''.join(row))
+        written_to_file.append(row)
+    elif not found_info and row not in written_to_file:
+        subject_logger.info("New info for Subject: " + ''.join(row))
+        written_to_file.append(row)
+    return found_info, found_subject
 
 
 def check_config_existence(file_, type):
@@ -410,7 +429,7 @@ def configError(e):
         sys.exit()
 
 
-def set_subject_logger(test_bool):
+def set_subject_logger(test_bool, config=None):
     """
     Function: Creates a logger for subjects and new information.
     Parameter:
@@ -422,10 +441,10 @@ def set_subject_logger(test_bool):
     subject_logger = logging.getLogger("QIBSubjects")
     subject_logger.setLevel(logging.INFO)
 
-    if test_bool:
-        ch = logging.FileHandler("test_files/QIBSubjects.log")
+    if not test_bool:
+        ch = logging.FileHandler(config.base_path+"QIB/QIBSubjects"+config.study_id+".log")
     else:
-        ch = logging.FileHandler("QIBSubjects.log")
+        ch = logging.FileHandler("test_files/QIBSubjects.log")
 
     ch.setLevel(logging.INFO)
     subform = logging.Formatter('%(asctime)s:%(message)s')
@@ -445,25 +464,38 @@ def get_patient_mapping(config):
     patient_dict = {}
     with open(config.patient_file, 'r') as patient_file:
         for line in patient_file:
-            line_list = line.replace("\n","").split('\t')
+            line_list = line.replace("\n", "").split('\t')
             patient_dict[line_list[0]] = line_list[1]
     return patient_dict
 
-def get_session_data(subject_obj, label_list):
+
+def get_session_data(label_list, project, sessions, scanner_dict, config):
+    """
+    Function: get metadata from session through accession number
+    Parameters:
+        -subject_obj    xnatpy object   Object which contains the sessions
+        -label_list     List            parsed list of the label
+    Returns:
+        -metadata       Dictionary      Dictionary with metadata stored inside it.
+    """
 
     metadata = {}
-    #If the session cannot be found it uses a parsed version of the label to retrieve the needed information.
-    try:
-        _session = subject_obj.experiments["_".join(label_list[1:])]
-        metadata["laterality"] = _session._fields['laterality']
-        metadata["timepoint"] = _session._fields['timepoint']
-        metadata["scanner"]= _session.scanner
-        metadata["model"] = _session.model
-        metadata["manufacturer"] = _session.manufacturer
-
-    except KeyError:
-        metadata["laterality"] = label_list[3]
-        metadata["timepoint"] = label_list[4]
-        metadata["scanner"] = label_list[2]
-
-    return metadata
+    #TODO: Add parameter to config for scanner dict file. read file to dict and look up scanner/model to determin scanner number.
+    _session = [project.experiments[x.accession_identifier] for x in sessions][0]
+    metadata["laterality"] = _session._fields.get('laterality') or  label_list[3]
+    metadata["timepoint"] = _session._fields.get('timepoint') or  label_list[4]
+    _session = project.experiments['_'.join(label_list[1:])]
+    #metadata["scanner"] = _session.get('scanner') or label_list[2]
+    metadata["scanner model"] = _session.get('scanner/model') or "Not specified"
+    metadata["scanner manufacturer"] = _session.get('scanner/manufacturer') or "Not specified"
+    scanner_name = metadata["scanner manufacturer"]+metadata["scanner model"]
+    if scanner_dict.get(scanner_name):
+        metadata["scanner"] = "scanner" + str(scanner_dict.get(metadata["scanner manufacturer"]+
+                                                               metadata["scanner model"]))
+    else:
+        scanner_number = len(scanner_dict)+1
+        metadata["scanner"] = "scanner"+str(scanner_number)
+        with open(config.scanner_dict_file, 'a') as f:
+            f.write(scanner_name+'\t'+str(scanner_number)+'\n')
+        scanner_dict[scanner_name] = scanner_number
+    return metadata, scanner_dict

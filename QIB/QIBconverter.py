@@ -89,6 +89,8 @@ def main(args):
     data_list, data_header_list = QIB2TBatch.obtain_data(project, tag_file, patient_map, config)
     logging.info("Data obtained from XNAT.")
 
+    subject_logger = QIB2TBatch.set_subject_logger(False, config)
+
     print('Write data to files\n')
     QIB2TBatch.write_data(data_file, concept_file, data_list, data_header_list)
     logging.info("Data written to files.")

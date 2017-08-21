@@ -52,6 +52,7 @@ class ConfigStorage(object):
         self.pssw = config_connection.get('Connection', 'password')
         self.project_name = config_connection.get('Connection', 'project')
         self.patient_file = config_connection.get('Connection', 'patient_map_file')
+        self.scanner_dict_file = config_connection.get('Connection', 'scanner_dict_file')
 
     def set_params_conf(self, config_params):
         """
@@ -62,6 +63,7 @@ class ConfigStorage(object):
         self.study_id = config_params.get('Study', "STUDY_ID")
         self.security_req = config_params.get('Study', 'SECURITY_REQUIRED')
         self.top_node = config_params.get('Study', 'TOP_NODE')
+        self.append_facts = config_params.get('Study', 'APPEND_FACTS')
         self.base_path = config_params.get('Directory', 'path')
 
     def set_tags_conf(self, config_tags):
