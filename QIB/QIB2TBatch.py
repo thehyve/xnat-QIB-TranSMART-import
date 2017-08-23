@@ -442,7 +442,7 @@ def set_subject_logger(test_bool, config=None):
     subject_logger.setLevel(logging.INFO)
 
     if not test_bool:
-        ch = logging.FileHandler(config.base_path+"QIB/QIBSubjects"+config.study_id+".log")
+        ch = logging.FileHandler(config.base_path+"QIBSubjects"+config.study_id+".log")
     else:
         ch = logging.FileHandler("test_files/QIBSubjects.log")
 
