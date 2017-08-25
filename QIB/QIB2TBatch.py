@@ -65,21 +65,10 @@ def create_dir(config):
         -path    String                  Path to the directory where all the files will be saved.
     """
 
-    path = config.base_path + config.study_id
+    timestamp = datetime.now().strftime("_%Y%m%d%H%M%S")
+    path = config.base_path + config.study_id + timestamp
     if os.path.exists(path):
-        path_date = str(datetime.now().date())
-        path += path_date
-        try:
-            os.makedirs(path)
-        except:
-            logging.error("Directory already exists. Give a different study ID or rename the existing directory.")
-            sys.exit()
-    else:
-        os.makedirs(path)
-    if not os.path.exists(path + "/tags/"):
-        os.makedirs(path + "/tags/")
-    if not os.path.exists(path + "/clinical/"):
-        os.makedirs(path + "/clinical/")
+        raise ValueError('Path already exists: {0}'.format(path))
     return path
 
 
