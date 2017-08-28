@@ -69,6 +69,9 @@ def create_dir(config):
     path = config.base_path + config.study_id + timestamp
     if os.path.exists(path):
         raise ValueError('Path already exists: {0}'.format(path))
+    ## Make paths
+    os.makedirs(path + "/tags/", exist_ok=True)
+    os.makedirs(path + "/clinical/", exist_ok=True)
     return path
 
 
