@@ -50,6 +50,7 @@ if sys.version_info.major == 3:
 elif sys.version_info.major == 2:
     import ConfigParser
 import xnat
+from datetime import datetime as dt
 
 def main(args):
     """
@@ -61,23 +62,23 @@ def main(args):
     #Maybe create an object for the config reading part. Because it's taking in a lot of space.
     #Maybe create a liberary of this script and a seperate one as running script.
     logging.info("Start.")
-    print('Establishing connection\n')
+    print('Establishing connection')
     project, connection = make_connection(args)
 
-    print('Creating directory structure\n')
+    print('Creating directory structure')
     path = create_dir(args)
 
-    print('Write .params files\n')
+    print('Write .params files')
     write_params(path, args)
 
     print('Write headers\n')
     tag_file, data_file, concept_file = write_headers(path, args)
 
-    print('Obtaining data from XNAT\n')
+    print('Obtaining data from XNAT')
     data_list, data_header_list = obtain_data(project, tag_file, args)
     logging.info("Data obtained from XNAT.")
 
-    print('Write data to files\n')
+    print('Write data to files')
     write_data(data_file, concept_file, data_list, data_header_list)
     logging.info("Data written to files.")
 
@@ -131,15 +132,18 @@ def create_dir(args):
     """
     config = check_file_existence(args.params, "params")
 
+    timestamp = dt.now().strftime("%Y%m%d_%H%M%S")
+
     try:
         base_path = config.get('Directory', 'path')
         new_path = config.get('Study', 'STUDY_ID')
-        path = base_path+new_path
+        path = base_path+new_path+'_'+timestamp
         #Test if the /tags/ and /clinical are also there
         if not os.path.exists(path):
             os.makedirs(path)
             os.makedirs(path + "/tags/")
             os.makedirs(path + "/clinical/")
+        ### insert logging here logging.path
         return path
 
     except ConfigParser.NoSectionError as e:
