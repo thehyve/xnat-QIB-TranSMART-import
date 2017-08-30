@@ -15,6 +15,8 @@ import sys
 import logging
 
 import xnat
+import json
+from datetime import datetime
 
 if sys.version_info.major == 3:
     import configparser as ConfigParser
@@ -186,6 +188,7 @@ def retrieve_QIB(experiment, tag_file, data_row_dict, subject, data_header_list,
     """
     subject_obj = project.subjects[subject.label]
     session = subject_obj.experiments[experiment.label]
+
     begin_concept_key, tag_dict = write_project_metadata(session, tag_file, tag_dict, config)
 
     if subject.label in patient_map:
@@ -431,3 +434,29 @@ def get_session_data(label_list, project, sessions, scanner_dict, config):
             f.write(scanner_name+'\t'+str(scanner_number)+'\n')
         scanner_dict[scanner_name] = scanner_number
     return metadata, scanner_dict
+
+
+def check_if_updated(project, config):
+    updated = False
+    json_dict = {'last_updated' : datetime.now().isoformat(), 'session_list' : {}}
+
+    for subject in project.subjects.values():
+        subject_obj = project.subjects[subject.label]
+        for experiment in subject_obj.experiments.values():
+            if "qib" in experiment.label.lower() and experiment.project == config.project_name:
+                session = subject_obj.experiments[experiment.label]
+                # TODO: Ask only processing_end_date_time?
+                subject_timestamp = getattr(session, 'processing_end_date_time').isoformat()
+                json_dict['session_list'][experiment.label] = subject_timestamp
+
+    if os.path.isfile('json_file.json'):
+        with open('json_file.json', 'r') as fp:
+            data = json.load(fp)
+            for experiment_label in json_dict['session_list']:
+                if not data['session_list'][experiment_label] == json_dict['session_list'][experiment_label]:
+                    updated = True
+    if updated or not os.path.isfile('json_file.json'):
+        with open('json_file.json', 'w') as fp:
+           json.dump(json_dict, fp)
+
+    return updated
