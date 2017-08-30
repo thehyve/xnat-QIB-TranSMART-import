@@ -42,14 +42,10 @@ Taglist =
 
 """
 
-
 import argparse
 import logging
-
 import sys
-import time
 from datetime import datetime
-
 import QIB2TBatch
 from ConfigStorage import ConfigStorage
 
@@ -60,50 +56,52 @@ def main(args):
     Parameters:
         -args   ArgumentParser      Contains the location of the configuration files.
     """
-    start = time.time()
-    timestamp = datetime.now().strftime("_%Y%m%d%H%M%S")
-    logging.info("Start.")
 
     print("Storing configurations")
     config = ConfigStorage(args)
 
-    if config.__dict__ .__contains__("error"):
+    if config.__dict__.__contains__("error"):
         print(config.error)
         sys.exit()
 
-    print('Establishing connection')
-    project, connection = QIB2TBatch.make_connection(config)
+    timestamp = datetime.now().strftime("_%Y%m%d%H%M%S")
+    path = config.base_path + config.study_id + timestamp
 
     print('Creating directory structure')
-    path = QIB2TBatch.create_dir(config, timestamp)
+    QIB2TBatch.create_dir(path)
 
-    print('Write .params files')
+    logger = set_general_logger(path)
+    logger.info("Start.")
+
+    logger.info('Establishing connection')
+    project, connection = QIB2TBatch.make_connection(config)
+
+    logger.info('Write .params files')
     QIB2TBatch.write_params(path, config)
 
-    print('Write headers')
+    logger.info('Write headers')
     tag_file, data_file, concept_file = QIB2TBatch.write_headers(path, config)
 
-    print('Load patient mapping')
+    logger.info('Load patient mapping')
     patient_map = QIB2TBatch.get_patient_mapping(config)
     if not patient_map:
-        print('No patient mapping found')
+        logger.warning('No patient mapping found')
     else:
-        print('Found the following patient map:',patient_map, sep='\n')
+        logger.info(['Found the following patient map:', patient_map])
 
-    print('Obtaining data from XNAT')
-    data_list, data_header_list = QIB2TBatch.obtain_data(project, tag_file, patient_map, config)
-    logging.info("Data obtained from XNAT.")
+    logger.info('Obtaining data from XNAT')
+    data_list, data_header_list = QIB2TBatch.obtain_data(project,
+                                                         tag_file,
+                                                         patient_map,
+                                                         config)
+    logger.info("Data obtained from XNAT.")
 
-    subject_logger = QIB2TBatch.set_subject_logger(False, path, timestamp,config)
-
-    print('Write data to files')
+    logger.info('Write data to files')
     QIB2TBatch.write_data(data_file, concept_file, data_list, data_header_list)
-    logging.info("Data written to files.")
+    logger.info("Data written to files.")
 
     connection.disconnect()
-    logging.info("Exit.")
-    end = time.time()
-    print(end - start)
+    logger.info("Exit.")
 
 
 if __name__ == "__main__":
@@ -115,3 +113,18 @@ if __name__ == "__main__":
     parser.add_argument("--tags", help="Location of the configuration file for the tags.")
     args = parser.parse_args()
     main(args)
+
+
+def set_general_logger(filepath):
+    """
+    Function: set general file logger
+    Args:
+        filepath: String
+
+    Returns:
+        logger
+    """
+    logger = logging.basicConfig(filename=filepath + '/QIBimporter.log',
+                                 format='%(asctime)s:%(levelname)s:%(message)s',
+                                 level=logging.DEBUG)
+    return logger

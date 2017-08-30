@@ -55,22 +55,16 @@ def make_connection(config):
             return e, None
 
 
-def create_dir(config, timestamp):
+def create_dir(path):
     """
     Function: Create the directory structure.
     Parameters:
-        -config  ConfigStorage object    Object which holds the information stored in the configuration files.
-    Returns: 
         -path    String                  Path to the directory where all the files will be saved.
     """
-
-    path = config.base_path + config.study_id + timestamp
     if os.path.exists(path):
         raise ValueError('Path already exists: {0}'.format(path))
-    ## Make paths
     os.makedirs(path + "/tags/", exist_ok=True)
     os.makedirs(path + "/clinical/", exist_ok=True)
-    return path
 
 
 def write_params(path, config):
@@ -354,43 +348,8 @@ def write_data(data_file, concept_file, data_list, data_header_list):
                     concept_file.write(str(os.path.basename(data_file.name)) + '\t' + str(
                         "\\".join(header.split("\\")[:-1])) + '\t' + str(index + 1) + '\t' + str(data_label) + '\n')
         row[-1] = row[-1].replace('\t', '\n')
-        found_info, found_subject = check_subject(row)
-        if not found_info:
-            data_file.write(''.join(row))
+        data_file.write(''.join(row))
     data_file.close()
-
-
-def check_subject(row):
-    """
-    Function: Checks in a log file if the subject is new or if there is information added or removed.
-
-    Parameters:
-        - rows   List    List containing lists with the retrieved QIB information of a subject.
-    """
-
-    # TODO Needs a way to read the header for each datapiece.
-
-    subject_logger = logging.getLogger("QIBSubjects")
-    with open(subject_logger.handlers[0].baseFilename, "r") as log_file:
-        log_data = log_file.read()
-
-    written_to_file = []
-
-    found_info = False
-    found_subject = False
-    if row[0] in log_data:
-        found_subject = True
-        if ''.join(row) in log_data:
-            found_info = True
-
-    if not found_subject and row not in written_to_file:
-        subject_logger.info("New subject: " + ''.join(row))
-        written_to_file.append(row)
-    elif not found_info and row not in written_to_file:
-        subject_logger.info("New info for Subject: " + ''.join(row))
-        written_to_file.append(row)
-    return found_info, found_subject
-
 
 def check_config_existence(file_, type):
     """
@@ -427,31 +386,6 @@ def configError(e):
         print(str(e) + "\nExit")
         sys.exit()
 
-
-def set_subject_logger(test_bool, path, timestamp, config=None):
-    """
-    Function: Creates a logger for subjects and new information.
-    Parameter:
-        -test_bool        Boolean   True = test
-    Returns:
-        -subject_logger   Logger    Logger to determine if a subject or its information is already parsed
-    """
-    logging.basicConfig(filename="QIBlog.log", format='%(asctime)s:%(levelname)s:%(message)s', level=logging.INFO)
-    subject_logger = logging.getLogger("QIBSubjects")
-    subject_logger.setLevel(logging.INFO)
-
-    if not test_bool:
-        ch = logging.FileHandler(path+"/QIBSubjects"+config.study_id+'_'+timestamp+".log")
-    else:
-        ch = logging.FileHandler("test_files/QIBSubjects.log")
-
-    ch.setLevel(logging.INFO)
-    subform = logging.Formatter('%(asctime)s:%(message)s')
-    ch.setFormatter(subform)
-    subject_logger.addHandler(ch)
-    return subject_logger
-
-
 def get_patient_mapping(config):
     """
     Function: Parse the patient mapping file to a dictionary.
@@ -477,7 +411,6 @@ def get_session_data(label_list, project, sessions, scanner_dict, config):
     Returns:
         -metadata       Dictionary      Dictionary with metadata stored inside it.
     """
-
     metadata = {}
     #TODO: Add parameter to config for scanner dict file. read file to dict and look up scanner/model to determin scanner number.
     _session = [project.experiments[x.accession_identifier] for x in sessions][0]
