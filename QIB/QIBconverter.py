@@ -48,6 +48,7 @@ import logging
 
 import sys
 import time
+from datetime import datetime
 
 import QIB2TBatch
 from ConfigStorage import ConfigStorage
@@ -60,38 +61,42 @@ def main(args):
         -args   ArgumentParser      Contains the location of the configuration files.
     """
     start = time.time()
+    timestamp = datetime.now().strftime("_%Y%m%d%H%M%S")
     logging.info("Start.")
 
-    print("Storing configurations\n")
+    print("Storing configurations")
     config = ConfigStorage(args)
 
     if config.__dict__ .__contains__("error"):
         print(config.error)
         sys.exit()
 
-    print('Establishing connection\n')
+    print('Establishing connection')
     project, connection = QIB2TBatch.make_connection(config)
 
-    print('Creating directory structure\n')
-    path = QIB2TBatch.create_dir(config)
+    print('Creating directory structure')
+    path = QIB2TBatch.create_dir(config, timestamp)
 
-    print('Write .params files\n')
+    print('Write .params files')
     QIB2TBatch.write_params(path, config)
 
-    print('Write headers\n')
+    print('Write headers')
     tag_file, data_file, concept_file = QIB2TBatch.write_headers(path, config)
 
-    print('Load patient mapping\n')
+    print('Load patient mapping')
     patient_map = QIB2TBatch.get_patient_mapping(config)
-    print(patient_map)
+    if not patient_map:
+        print('No patient mapping found')
+    else:
+        print('Found the following patient map:',patient_map, sep='\n')
 
-    print('Obtaining data from XNAT\n')
+    print('Obtaining data from XNAT')
     data_list, data_header_list = QIB2TBatch.obtain_data(project, tag_file, patient_map, config)
     logging.info("Data obtained from XNAT.")
 
-    subject_logger = QIB2TBatch.set_subject_logger(False, config)
+    subject_logger = QIB2TBatch.set_subject_logger(False, path, timestamp,config)
 
-    print('Write data to files\n')
+    print('Write data to files')
     QIB2TBatch.write_data(data_file, concept_file, data_list, data_header_list)
     logging.info("Data written to files.")
 

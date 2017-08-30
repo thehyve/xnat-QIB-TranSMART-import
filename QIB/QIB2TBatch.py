@@ -14,7 +14,6 @@ import os
 import sys
 import logging
 
-from datetime import datetime
 import xnat
 
 if sys.version_info.major == 3:
@@ -56,7 +55,7 @@ def make_connection(config):
             return e, None
 
 
-def create_dir(config):
+def create_dir(config, timestamp):
     """
     Function: Create the directory structure.
     Parameters:
@@ -65,21 +64,12 @@ def create_dir(config):
         -path    String                  Path to the directory where all the files will be saved.
     """
 
-    path = config.base_path + config.study_id
+    path = config.base_path + config.study_id + timestamp
     if os.path.exists(path):
-        path_date = str(datetime.now().date())
-        path += path_date
-        try:
-            os.makedirs(path)
-        except:
-            logging.error("Directory already exists. Give a different study ID or rename the existing directory.")
-            sys.exit()
-    else:
-        os.makedirs(path)
-    if not os.path.exists(path + "/tags/"):
-        os.makedirs(path + "/tags/")
-    if not os.path.exists(path + "/clinical/"):
-        os.makedirs(path + "/clinical/")
+        raise ValueError('Path already exists: {0}'.format(path))
+    ## Make paths
+    os.makedirs(path + "/tags/", exist_ok=True)
+    os.makedirs(path + "/clinical/", exist_ok=True)
     return path
 
 
@@ -438,7 +428,7 @@ def configError(e):
         sys.exit()
 
 
-def set_subject_logger(test_bool, config=None):
+def set_subject_logger(test_bool, path, timestamp, config=None):
     """
     Function: Creates a logger for subjects and new information.
     Parameter:
@@ -451,7 +441,7 @@ def set_subject_logger(test_bool, config=None):
     subject_logger.setLevel(logging.INFO)
 
     if not test_bool:
-        ch = logging.FileHandler(config.base_path+"QIBSubjects"+config.study_id+".log")
+        ch = logging.FileHandler(path+"/QIBSubjects"+config.study_id+'_'+timestamp+".log")
     else:
         ch = logging.FileHandler("test_files/QIBSubjects.log")
 
