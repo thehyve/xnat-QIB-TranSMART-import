@@ -1,0 +1,20 @@
+[Connection]
+url = {URL TO XNAT SERVER}
+user = {USERNAME}
+password = {PASSWORD}
+project = {PROJECT ID IN XNAT}
+patient_map_file = { LOCATION OF PATIENT MAPPING FILE}
+
+[Study] {TRANSMART SPECIFIC}
+STUDY_ID = QIBrealTest {NAME OF STUDY/FOLDER}
+SECURITY_REQUIRED = {Y|N}
+TOP_NODE = {TOP NODE OF TRANSMART STUDY}
+
+[Directory]
+path = {PATH TO WHERE STUDY FOLDER IS CREATED}
+
+[Tags]
+Taglist = analysis_tool, analysis_tool_version, analysis_tool_ontology_name, analysis_tool_ontology_iri, description, processing_user_name, processing_site_name, paper_title, paper_url, paper_notes, review_status, reviewer
+{TAGS THAT WORK}
+errors= processing_start_date_time, processing_end_date_time,
+{TAGS THAT DO NOT WORK YET}

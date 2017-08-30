@@ -1,0 +1,108 @@
+Concept Path	Title	Description	Weight
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1	analysis tool	MultiAtlas Appearance Model Segmentation with Volume Calculation	12
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1	analysis tool version	0.1	11
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1	analysis tool ontology name	ToolOntology	10
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1	analysis tool ontology iri	ToolIRI	9
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1	description	MultiAtlas Appearance Model Segmentation	8
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1	processing user name	mhansson	7
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1	processing site name	Erasmus MC	6
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1	paper title	http://Automated brain structure segmentation based on atlas registration and appearance models	5
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1	paper url	http://freesurfer.net/fswiki/FreeSurferMethodsCitation?action=AttachFile&do=view&target=freesurfer_methods.doc	4
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1	paper notes	Method is a variant of version described in paper (no MRF model for spatial coherence	3
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1	review status	Not reviewed	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\Femoral Cartilage volume (mm^3)	Ontology name	Uberon	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\Femoral Cartilage volume (mm^3)	Ontology IRI	NA	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\Femoral Cartilage volume (mm^3)	accession identifier	PROOF001_MRI_L_T0	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\Femoral Cartilage volume (mm^3)	laterality	L	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\Femoral Cartilage volume (mm^3)	timepoint	T0	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\Femoral Cartilage volume (mm^3)	scanner	MRI	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\Femoral Cartilage volume (mm^3)	model	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\Femoral Cartilage volume (mm^3)	manufacturer	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\entire (masked) image volume (mm^3)	Ontology name	Uberon	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\entire (masked) image volume (mm^3)	Ontology IRI	NA	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\entire (masked) image volume (mm^3)	accession identifier	PROOF001_MRI_L_T0	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\entire (masked) image volume (mm^3)	laterality	L	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\entire (masked) image volume (mm^3)	timepoint	T0	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\entire (masked) image volume (mm^3)	scanner	MRI	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\entire (masked) image volume (mm^3)	model	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0\entire (masked) image volume (mm^3)	manufacturer	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\Femoral Cartilage volume (mm^3)	Ontology name	Uberon	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\Femoral Cartilage volume (mm^3)	Ontology IRI	NA	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\Femoral Cartilage volume (mm^3)	accession identifier	PROOF001_MRI_L_T30	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\Femoral Cartilage volume (mm^3)	laterality	L	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\Femoral Cartilage volume (mm^3)	timepoint	T30	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\Femoral Cartilage volume (mm^3)	scanner	MRI	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\Femoral Cartilage volume (mm^3)	model	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\Femoral Cartilage volume (mm^3)	manufacturer	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\entire (masked) image volume (mm^3)	Ontology name	Uberon	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\entire (masked) image volume (mm^3)	Ontology IRI	NA	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\entire (masked) image volume (mm^3)	accession identifier	PROOF001_MRI_L_T30	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\entire (masked) image volume (mm^3)	laterality	L	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\entire (masked) image volume (mm^3)	timepoint	T30	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\entire (masked) image volume (mm^3)	scanner	MRI	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\entire (masked) image volume (mm^3)	model	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30\entire (masked) image volume (mm^3)	manufacturer	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\Femoral Cartilage volume (mm^3)	Ontology name	Uberon	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\Femoral Cartilage volume (mm^3)	Ontology IRI	NA	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\Femoral Cartilage volume (mm^3)	accession identifier	PROOF001_MRI_L_T78	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\Femoral Cartilage volume (mm^3)	laterality	L	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\Femoral Cartilage volume (mm^3)	timepoint	T78	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\Femoral Cartilage volume (mm^3)	scanner	MRI	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\Femoral Cartilage volume (mm^3)	model	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\Femoral Cartilage volume (mm^3)	manufacturer	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\entire (masked) image volume (mm^3)	Ontology name	Uberon	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\entire (masked) image volume (mm^3)	Ontology IRI	NA	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\entire (masked) image volume (mm^3)	accession identifier	PROOF001_MRI_L_T78	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\entire (masked) image volume (mm^3)	laterality	L	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\entire (masked) image volume (mm^3)	timepoint	T78	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\entire (masked) image volume (mm^3)	scanner	MRI	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\entire (masked) image volume (mm^3)	model	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78\entire (masked) image volume (mm^3)	manufacturer	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\Femoral Cartilage volume (mm^3)	Ontology name	Uberon	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\Femoral Cartilage volume (mm^3)	Ontology IRI	NA	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\Femoral Cartilage volume (mm^3)	accession identifier	PROOF001_MRI_R_T0	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\Femoral Cartilage volume (mm^3)	laterality	R	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\Femoral Cartilage volume (mm^3)	timepoint	T0	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\Femoral Cartilage volume (mm^3)	scanner	MRI	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\Femoral Cartilage volume (mm^3)	model	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\Femoral Cartilage volume (mm^3)	manufacturer	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\entire (masked) image volume (mm^3)	Ontology name	Uberon	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\entire (masked) image volume (mm^3)	Ontology IRI	NA	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\entire (masked) image volume (mm^3)	accession identifier	PROOF001_MRI_R_T0	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\entire (masked) image volume (mm^3)	laterality	R	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\entire (masked) image volume (mm^3)	timepoint	T0	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\entire (masked) image volume (mm^3)	scanner	MRI	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\entire (masked) image volume (mm^3)	model	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0\entire (masked) image volume (mm^3)	manufacturer	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\Femoral Cartilage volume (mm^3)	Ontology name	Uberon	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\Femoral Cartilage volume (mm^3)	Ontology IRI	NA	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\Femoral Cartilage volume (mm^3)	accession identifier	PROOF001_MRI_R_T30	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\Femoral Cartilage volume (mm^3)	laterality	R	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\Femoral Cartilage volume (mm^3)	timepoint	T30	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\Femoral Cartilage volume (mm^3)	scanner	MRI	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\Femoral Cartilage volume (mm^3)	model	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\Femoral Cartilage volume (mm^3)	manufacturer	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\entire (masked) image volume (mm^3)	Ontology name	Uberon	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\entire (masked) image volume (mm^3)	Ontology IRI	NA	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\entire (masked) image volume (mm^3)	accession identifier	PROOF001_MRI_R_T30	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\entire (masked) image volume (mm^3)	laterality	R	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\entire (masked) image volume (mm^3)	timepoint	T30	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\entire (masked) image volume (mm^3)	scanner	MRI	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\entire (masked) image volume (mm^3)	model	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30\entire (masked) image volume (mm^3)	manufacturer	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\Femoral Cartilage volume (mm^3)	Ontology name	Uberon	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\Femoral Cartilage volume (mm^3)	Ontology IRI	NA	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\Femoral Cartilage volume (mm^3)	accession identifier	PROOF001_MRI_R_T78	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\Femoral Cartilage volume (mm^3)	laterality	R	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\Femoral Cartilage volume (mm^3)	timepoint	T78	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\Femoral Cartilage volume (mm^3)	scanner	MRI	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\Femoral Cartilage volume (mm^3)	model	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\Femoral Cartilage volume (mm^3)	manufacturer	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\entire (masked) image volume (mm^3)	Ontology name	Uberon	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\entire (masked) image volume (mm^3)	Ontology IRI	NA	1
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\entire (masked) image volume (mm^3)	accession identifier	PROOF001_MRI_R_T78	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\entire (masked) image volume (mm^3)	laterality	R	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\entire (masked) image volume (mm^3)	timepoint	T78	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\entire (masked) image volume (mm^3)	scanner	MRI	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\entire (masked) image volume (mm^3)	model	Not specified	2
+MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78\entire (masked) image volume (mm^3)	manufacturer	Not specified	2

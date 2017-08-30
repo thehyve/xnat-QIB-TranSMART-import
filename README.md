@@ -1,22 +1,30 @@
 # QIB importer
 
-**Function:** Connect to an XNAT instance. There the script finds the QIB datatypes from XNAT.
+**Function:** Connect to an XNAT instance. Inside the given project in XNAT it searches for QIB datatypes.
 These datatypes are than transformed into a directory structure that can be uploaded to TranSMART.
 
 **Functional:** The script is tested with Python2.7 and Python3.6
 
 **Requirements:**
-- *xnatpy*      Downloadable here: https://bitbucket.org/bigr_erasmusmc/xnatpy, for Python3 use the feature/xsdparse branch.
+- *xnatpy*      Downloadable here: https://bitbucket.org/bigr_erasmusmc/xnatpy, for Python3 functionality use the feature/xsdparse branch.
 - *nose*        Can be installed by running pip install nose on the command line
+
+A requirements.txt file is in the repository. To use this run the following statement on the command line.
+
+```
+pip install -r requirements.txt
+```
 
 **Parameters:**
 
+- *--all*           Location of the configuration file, containing all the information.
 - *--connection*    Location of the configuration file for establishing XNAT connection.
 - *--params*        Location of the configuration file for the variables in the .param files.
 - *--tags*          Location of the configuration file for the tags.
 
+It is optional whether you use --all or the other three.
 
-Configuration file format:
+**Configuration file format:**
 
 --connection configuration file:
 
@@ -26,6 +34,7 @@ url =
 user =
 password =
 project =
+patient_map_file =
 
 [Directory]
 path =

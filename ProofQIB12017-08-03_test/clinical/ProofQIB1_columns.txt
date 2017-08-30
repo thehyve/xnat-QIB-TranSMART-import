@@ -1,0 +1,14 @@
+Filename	Category Code	Column Number	Data Label
+ProofQIB1_clinical.txt	subject	1	SUBJ_ID
+ProofQIB1_clinical.txt	MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0	2	Femoral Cartilage volume (mm^3)
+ProofQIB1_clinical.txt	MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T0	3	entire (masked) image volume (mm^3)
+ProofQIB1_clinical.txt	MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30	4	Femoral Cartilage volume (mm^3)
+ProofQIB1_clinical.txt	MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T30	5	entire (masked) image volume (mm^3)
+ProofQIB1_clinical.txt	MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78	6	Femoral Cartilage volume (mm^3)
+ProofQIB1_clinical.txt	MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\L\T78	7	entire (masked) image volume (mm^3)
+ProofQIB1_clinical.txt	MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0	8	Femoral Cartilage volume (mm^3)
+ProofQIB1_clinical.txt	MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T0	9	entire (masked) image volume (mm^3)
+ProofQIB1_clinical.txt	MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30	10	Femoral Cartilage volume (mm^3)
+ProofQIB1_clinical.txt	MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T30	11	entire (masked) image volume (mm^3)
+ProofQIB1_clinical.txt	MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78	12	Femoral Cartilage volume (mm^3)
+ProofQIB1_clinical.txt	MultiAtlas Appearance Model Segmentation with Volume Calculation 0.1\MRI\Cartilage\R\T78	13	entire (masked) image volume (mm^3)
