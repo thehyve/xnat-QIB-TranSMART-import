@@ -224,10 +224,19 @@ def retrieve_QIB(experiment, tag_file, data_row_dict, subject, data_header_list,
         results = session.biomarker_categories[biomarker_category]
 
         for biomarker in results.biomarkers:
+            biomarker_id = results.biomarkers[biomarker].id
             concept_value = results.biomarkers[biomarker].value
-            concept_key = str(begin_concept_key) + '\\' + str(metadata["scanner"]) + '\\' + str(
-                biomarker_category) + "\\" + metadata["laterality"] \
-                          + "\\" + metadata["timepoint"] + "\\" + str(biomarker)
+
+            concept_path_items = [
+                str(begin_concept_key),
+                str(metadata["scanner"]),
+                str(results.category_name),
+                metadata["laterality"],
+                metadata["timepoint"],
+                str(biomarker_id)
+            ]
+            concept_key = '\\'.join(concept_path_items)
+
             data_row_dict[concept_key] = concept_value
 
             if concept_key not in data_header_list and concept_key not in concept_key_list:
@@ -482,15 +491,15 @@ def get_session_data(label_list, project, sessions, scanner_dict, config):
     metadata = {}
     #TODO: Add parameter to config for scanner dict file. read file to dict and look up scanner/model to determin scanner number.
     _session = [project.experiments[x.accession_identifier] for x in sessions][0]
-    metadata["laterality"] = _session._fields.get('laterality') or  label_list[3]
-    metadata["timepoint"] = _session._fields.get('timepoint') or  label_list[4]
+    metadata["laterality"] = _session._fields.get('laterality', label_list[3])
+    metadata["timepoint"] = _session._fields.get('timepoint', label_list[4])
     _session = project.experiments['_'.join(label_list[1:])]
     #metadata["scanner"] = _session.get('scanner') or label_list[2]
     metadata["scanner model"] = _session.get('scanner/model') or "Not specified"
     metadata["scanner manufacturer"] = _session.get('scanner/manufacturer') or "Not specified"
     scanner_name = metadata["scanner manufacturer"]+metadata["scanner model"]
     if scanner_dict.get(scanner_name):
-        metadata["scanner"] = "scanner" + str(scanner_dict.get(metadata["scanner manufacturer"]+
+        metadata["scanner"] = "scanner" + str(scanner_dict.get(metadata["scanner manufacturer"] +
                                                                metadata["scanner model"]))
     else:
         scanner_number = len(scanner_dict)+1
