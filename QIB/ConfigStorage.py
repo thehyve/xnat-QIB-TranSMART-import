@@ -53,6 +53,9 @@ class ConfigStorage(object):
         self.project_name = config_connection.get('Connection', 'project')
         self.patient_file = config_connection.get('Connection', 'patient_map_file')
         self.scanner_dict_file = config_connection.get('Connection', 'scanner_dict_file')
+        self.timestamp_json_log = config_connection.get('Connection', 'timestamp_json_log')
+        self.job_log = config_connection.get('Connection', 'job_log')
+        self.log_level = config_connection.get('Connection','log_level')
 
     def set_params_conf(self, config_params):
         """

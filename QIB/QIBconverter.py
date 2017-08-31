@@ -61,66 +61,68 @@ def main(args):
     config = ConfigStorage(args)
 
     if config.__dict__.__contains__("error"):
-        print(config.error)
-        sys.exit()
+        logging.error(config.error)
+        sys.exit(1)
 
     timestamp = datetime.now().strftime("_%Y%m%d%H%M%S")
     path = config.base_path + config.study_id + timestamp
 
-    print('Creating directory structure')
-    QIB2TBatch.create_dir(path)
+    logger = set_job_logger(config)
+    logger.info("Start new job.")
 
-    logger = set_general_logger(path)
-    logging.info("Start.")
-
-    logging.info('Establishing connection')
+    logger.info('Establishing connection')
     project, connection = QIB2TBatch.make_connection(config)
 
-    continue_writing = QIB2TBatch.check_if_updated(project, config)
-    if not continue_writing:
-        logging.info("No data added. Exiting")
+    continue_job = QIB2TBatch.check_if_updated(project, config)
+    if continue_job:
+        logger.info("No data added. Exiting")
         sys.exit(9)
 
-    logging.info('Write .params files')
+    logger.info('Creating directory structure')
+    QIB2TBatch.create_dir(path)
+
+    logger.info('Writing .params files')
     QIB2TBatch.write_params(path, config)
 
-    logging.info('Write headers')
+    logger.info('Writing headers')
     tag_file, data_file, concept_file = QIB2TBatch.write_headers(path, config)
 
-    logging.info('Load patient mapping')
+    logger.info('Load patient mapping')
     patient_map = QIB2TBatch.get_patient_mapping(config)
     if not patient_map:
-        logging.warning('No patient mapping found')
+        logger.warning('No patient mapping found')
     else:
-        logging.info(['Found the following patient map:', patient_map])
+        logger.info(['Found the following patient map:', patient_map])
 
-    logging.info('Obtaining data from XNAT')
+    logger.info('Obtaining data from XNAT')
     data_list, data_header_list = QIB2TBatch.obtain_data(project,
                                                          tag_file,
                                                          patient_map,
                                                          config)
-    logging.info("Data obtained from XNAT.")
+    logger.info("Data obtained from XNAT.")
 
-    logging.info('Write data to files')
+    logger.info('Writing data to files')
     QIB2TBatch.write_data(data_file, concept_file, data_list, data_header_list)
-    logging.info("Data written to files.")
+    logger.info("Data written to files.")
 
     connection.disconnect()
-    logging.info("Exit.")
+    logger.info("Job complete, Exit.")
 
 
-def set_general_logger(filepath):
+def set_job_logger(config):
     """
     Function: set general file logger
     Args:
-        filepath: String
+        config: ConfigStorage object
 
     Returns:
         logger
     """
-    logger = logging.basicConfig(filename=filepath + '/QIBimporter.log',
+    logging.basicConfig(filename=config.job_log,
                                  format='%(asctime)s:%(levelname)s:%(message)s',
-                                 level=logging.DEBUG)
+                                 level=config.log_level,
+                        )
+    logger = logging.getLogger('job_log')
     return logger
 
 

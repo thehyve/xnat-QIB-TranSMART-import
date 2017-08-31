@@ -133,6 +133,7 @@ def obtain_data(project, tag_file, patient_map, config):
     data_list = []
     tag_dict = {}
     scanner_dict = {}
+    # TODO: build in check to see if scanner dict exists, if not, skip this step
     with open(config.scanner_dict_file) as f:
         for line in f:
             (key, val) = line.replace('\n','').split('\t')
@@ -191,6 +192,7 @@ def retrieve_QIB(experiment, tag_file, data_row_dict, subject, data_header_list,
 
     begin_concept_key, tag_dict = write_project_metadata(session, tag_file, tag_dict, config)
 
+    # TODO: build in check to see if patiet_map file exists, if not skip this step
     if subject.label in patient_map:
         data_row_dict['subject'] = patient_map[subject.label]
     else:
@@ -449,14 +451,13 @@ def check_if_updated(project, config):
                 subject_timestamp = getattr(session, 'processing_end_date_time').isoformat()
                 json_dict['session_list'][experiment.label] = subject_timestamp
 
-    if os.path.isfile('json_file.json'):
-        with open('json_file.json', 'r') as fp:
+    if os.path.isfile(config.timestamp_json_log):
+        with open(config.timestamp_json_log, 'r') as fp:
             data = json.load(fp)
             for experiment_label in json_dict['session_list']:
                 if not data['session_list'][experiment_label] == json_dict['session_list'][experiment_label]:
                     updated = True
-    if updated or not os.path.isfile('json_file.json'):
-        with open('json_file.json', 'w') as fp:
+    if updated or not os.path.isfile(config.timestamp_json_log):
+        with open(config.timestamp_json_log, 'w') as fp:
            json.dump(json_dict, fp)
-
     return updated
