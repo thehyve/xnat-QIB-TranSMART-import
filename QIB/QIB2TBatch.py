@@ -133,11 +133,11 @@ def obtain_data(project, tag_file, patient_map, config):
     data_list = []
     tag_dict = {}
     scanner_dict = {}
-    # TODO: build in check to see if scanner dict exists, if not, skip this step
-    with open(config.scanner_dict_file) as f:
-        for line in f:
-            (key, val) = line.replace('\n','').split('\t')
-            scanner_dict[key] = val
+    if os.path.isfile(config.scanner_dict_file):
+        with open(config.scanner_dict_file) as f:
+            for line in f:
+                (key, val) = line.replace('\n','').split('\t')
+                scanner_dict[key] = val
     for subject in project.subjects.values():
         data_row_dict = {}
         subject_obj = project.subjects[subject.label]
@@ -400,10 +400,11 @@ def get_patient_mapping(config):
         -patient_dict   Dictionary               Dictionary used to map the patient identifiers. Key is identifier from XNAT.
     """
     patient_dict = {}
-    with open(config.patient_file, 'r') as patient_file:
-        for line in patient_file:
-            line_list = line.replace("\n", "").split('\t')
-            patient_dict[line_list[0]] = line_list[1]
+    if os.path.isfile(config.scanner_dict_file):
+        with open(config.patient_file, 'r') as patient_file:
+            for line in patient_file:
+                line_list = line.replace("\n", "").split('\t')
+                patient_dict[line_list[0]] = line_list[1]
     return patient_dict
 
 
